@@ -1,6 +1,7 @@
 /*
    28874Decoder - A decoder for the NV item 00028874
    Original code Copyright (c) 2019 VVE
+   Edits Copyright (c) 2019 Andrea Mennillo
 
    Licensed under the MIT license - See LICENSE for details.
 */
@@ -139,17 +140,195 @@ while (fptr<ifsiz) {
 			if (ulca > 0) ast='*'; else ast=' ';
 			printf("%d",band[i]);
 			printf("%c",bclass[i]+0x40);
+			if(ant[i]!=0)
 			printf("%d",ant[i]);
 			if (ulclass[i] != 0) printf("%c",ulclass[i]+0x40);
 			st+=((bclass[i]==1)?1:(bclass[i]-1))*ant[i];
 			if (st > maxstr) maxstr=st;
 		}
-//		printf(" %d %d",misc1[i],misc2[i]);
+		//printf(" %d %d",misc1[i],misc2[i]);
 		printf(" %d%c\n",st,ast);
 		numcom++;
 	continue;
 	}
-	printf("Incorrect format: incorrect descriptor type %d (333 or 334 expected). File offset=%x.\n",item16,fptr-2);
+  if (item16 == 201) {
+	for(i=0;i<6;i++) band[i]=0;
+	for(i=0;i<6;i++) bclass[i]=0;
+	for(i=0;i<6;i++) ulclass[i]=0;
+	for(i=0;i<6;i++) ant[i]=0;
+	descok=0;
+	for (i=0;i<6;i++) {
+		fread(&item16,1,2,in);
+		item16&=0xffff;
+		fptr+=2;
+		if (item16 != 0) {
+			band[i]=item16;
+			descok=1;
+		}
+		fread(&item8,1,1,in);
+		item8&=0xff;
+		fptr++;
+		bclass[i]=item8;
+		fread(&item8,1,1,in);
+        item8&=0xff;
+		fptr++;
+		ant[i]=item8;
+	}
+	if (descok == 0) {
+		printf("Incorrect format: no any downlink carrier in combo\n");
+		goto emerexit;
+	}
+		continue;
+	}	
+	if (item16 == 202) {
+		ulca=0;
+		fread(&item16,1,2,in);
+		item16&=0xffff;
+		fptr+=2;
+		fread(&item8,1,1,in);
+		item8&=0xff;
+		fptr++;
+		fread(&buf,1,1,in);
+		fptr++;
+		for(i=0;i<6;i++) ulclass[i]=0;
+		for(i=0;i<6;i++) {
+			if (item16 == band[i]) {
+				if (bclass[i] >= item8) {
+					ulclass[i]=item8;
+					if (item8 > 2) ulca=1;
+					break;
+				}
+			}
+		}
+
+		fread(&item16,1,2,in);
+		item16&=0xffff;
+		fptr+=2;
+		fread(&item8,1,1,in);
+		item8&=0xff;
+		fptr++;
+		fread(&buf,1,1,in);
+		fptr++;
+		if (item16 != 0) {
+		for(i=0;i<6;i++) {
+			if (item16 == band[i]) {
+				if (bclass[i] >= item8) {
+					ulclass[i]=item8;
+					ulca++;
+					break;
+				}
+			}
+		}
+		}
+		fread(&buf,1,16,in);
+		fptr+=16;
+		descok=1;
+		st=0;
+		for(i=0;i<6;i++) {
+			if (band[i] == 0) {
+				descok=0;
+				continue;
+			}
+			if (i != 0) printf("-");
+			if (ulca > 0) ast='*'; else ast=' ';
+			printf("%d",band[i]);
+			printf("%c",bclass[i]+0x40);
+			if(ant[i]!=0)
+			printf("%d",ant[i]);
+			if (ulclass[i] != 0) printf("%c",ulclass[i]+0x40);
+			st+=((bclass[i]==1)?1:(bclass[i]-1))*ant[i];
+			if (st > maxstr) maxstr=st;
+		}
+		printf(" %d%c\n",st,ast);
+		numcom++;
+	continue;
+	}
+	if (item16 == 137) {
+	for(i=0;i<6;i++) band[i]=0;
+	for(i=0;i<6;i++) bclass[i]=0;
+	for(i=0;i<6;i++) ulclass[i]=0;
+	for(i=0;i<6;i++) ant[i]=0;
+	descok=0;
+	for (i=0;i<6;i++) {
+		fread(&item16,1,2,in);
+		item16&=0xffff;
+		fptr+=2;
+		if (item16 != 0) {
+			band[i]=item16;
+			ant[i]=2;
+			descok=1;
+		}
+		fread(&item8,1,1,in);
+		item8&=0xff;
+		fptr++;
+		bclass[i]=item8;
+	}
+	if (descok == 0) {
+		printf("Incorrect format: no any downlink carrier in combo\n");
+		goto emerexit;
+	}
+		continue;
+	}	
+	if (item16 == 138) {
+		ulca=0;
+		fread(&item16,1,2,in);
+		item16&=0xffff;
+		fptr+=2;
+		fread(&item8,1,1,in);
+		item8&=0xff;
+		fptr++;
+		for(i=0;i<6;i++) ulclass[i]=0;
+		for(i=0;i<6;i++) {
+			if (item16 == band[i]) {
+				if (bclass[i] >= item8) {
+					ulclass[i]=item8;
+					if (item8 > 2) ulca=1;
+					break;
+				}
+			}
+		}
+
+		fread(&item16,1,2,in);
+		item16&=0xffff;
+		fptr+=2;
+		fread(&item8,1,1,in);
+		item8&=0xff;
+		fptr++;
+		if (item16 != 0) {
+		for(i=0;i<6;i++) {
+			if (item16 == band[i]) {
+				if (bclass[i] >= item8) {
+					ulclass[i]=item8;
+					ulca++;
+					break;
+				}
+			}
+		}
+		}
+		fread(&buf,1,12,in);
+		fptr+=12;
+		descok=1;
+		st=0;
+		for(i=0;i<6;i++) {
+			if (band[i] == 0) {
+				descok=0;
+				continue;
+			}
+			if (i != 0) printf("-");
+			if (ulca > 0) ast='*'; else ast=' ';
+			printf("%d",band[i]);
+			printf("%c",bclass[i]+0x40);
+			if(ant[i]!=0)
+			printf("%d",ant[i]);
+			if (ulclass[i] != 0) printf("%c",ulclass[i]+0x40);
+			st+=((bclass[i]==1)?1:(bclass[i]-1))*ant[i];
+			if (st > maxstr) maxstr=st;
+		}
+		printf(" %d%c\n",st,ast);
+		numcom++;
+	continue;
+	}  
+	printf("Incorrect format: incorrect descriptor type %d (137, 138, 201, 202, 333 or 334 expected). File offset=%x.\n",item16,fptr-2);
 }
 printf("\n");
 printf("Number of combos: %d\n",numcom);
