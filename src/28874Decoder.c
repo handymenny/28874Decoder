@@ -1,3 +1,10 @@
+/*
+   28874Decoder - A decoder for the NV item 00028874
+   Original code Copyright (c) 2019 VVE
+
+   Licensed under the MIT license - See LICENSE for details.
+*/
+
 #include <stdio.h>
 #include <fcntl.h>
 
