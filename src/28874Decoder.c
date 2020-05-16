@@ -100,7 +100,7 @@ while (fptr<ifsiz) {
 		for(i=0;i<6;i++) ulclass[i]=0;
 		for(i=0;i<6;i++) {
 			if (item16 == band[i]) {
-				if (bclass[i] >= item8) {
+				if (bclass[i] >= 0) {
 					ulclass[i]=item8;
 					if (item8 > 2) ulca=1;
 					break;
@@ -119,7 +119,7 @@ while (fptr<ifsiz) {
 		if (item16 != 0) {
 		for(i=0;i<6;i++) {
 			if (item16 == band[i]) {
-				if (bclass[i] >= item8) {
+				if (bclass[i] >= 0) {
 					ulclass[i]=item8;
 					ulca++;
 					break;
@@ -193,7 +193,7 @@ while (fptr<ifsiz) {
 		for(i=0;i<6;i++) ulclass[i]=0;
 		for(i=0;i<6;i++) {
 			if (item16 == band[i]) {
-				if (bclass[i] >= item8) {
+				if (bclass[i] >= 0) {
 					ulclass[i]=item8;
 					if (item8 > 2) ulca=1;
 					break;
@@ -212,7 +212,7 @@ while (fptr<ifsiz) {
 		if (item16 != 0) {
 		for(i=0;i<6;i++) {
 			if (item16 == band[i]) {
-				if (bclass[i] >= item8) {
+				if (bclass[i] >= 0) {
 					ulclass[i]=item8;
 					ulca++;
 					break;
@@ -280,7 +280,7 @@ while (fptr<ifsiz) {
 		for(i=0;i<6;i++) ulclass[i]=0;
 		for(i=0;i<6;i++) {
 			if (item16 == band[i]) {
-				if (bclass[i] >= item8) {
+				if (bclass[i] >= 0) {
 					ulclass[i]=item8;
 					if (item8 > 2) ulca=1;
 					break;
@@ -297,7 +297,7 @@ while (fptr<ifsiz) {
 		if (item16 != 0) {
 		for(i=0;i<6;i++) {
 			if (item16 == band[i]) {
-				if (bclass[i] >= item8) {
+				if (bclass[i] >= 0) {
 					ulclass[i]=item8;
 					ulca++;
 					break;
