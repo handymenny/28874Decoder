@@ -3,7 +3,7 @@ A small utility written in C code that aims to decode the NV item 00028874.
 The NV item 00028874 is used in the last Qualcomm modems to specify the supported carrier aggregations.
 
 This is one of the tools used to get the data you can find on my own site [smartphonecombo.it](https://smartphonecombo.it) and [cacombos.com](https://cacombos.com).  
-If the data you have obtained thanks to this tool are not on either of the two sites, [contact me](mailto:handymenny@outlook.com) or [the administrators of cacombos.com](https://mt-tech.fi/en/contact/). Thanks :)
+If the data you have obtained thanks to this tool are not on either of the two sites, [contact me](mailto:handymenny@outlook.com) or [the administrators of cacombos.com](https://cacombos.com/contribute). Thanks :)
 
 # Build Instructions
 ```bash
