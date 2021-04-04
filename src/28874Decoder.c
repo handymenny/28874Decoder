@@ -17,8 +17,6 @@ unsigned int band[6];
 unsigned int bclass[6];
 unsigned int ulclass[6];
 unsigned int ant[6];
-unsigned int misc1[6];
-unsigned int misc2[6];
 char ast;
 unsigned int i,ifsiz,item8,item16,item32,fptr=0,descok=0,st,ulca,numcom=0,maxstr=0;
 
@@ -75,11 +73,8 @@ while (fptr<ifsiz) {
 		ant[i]=item8;
 		fread(&item32,1,4,in);
 		fptr+=4;
-		misc1[i]=item32;
 		fread(&item32,1,3,in);
-		item32&=0xffffff;
 		fptr+=3;
-		misc2[i]=item32;
 	}
 	if (descok == 0) {
 		printf("Incorrect format: no any downlink carrier in combo\n");
@@ -146,7 +141,6 @@ while (fptr<ifsiz) {
 			st+=((bclass[i]==1)?1:(bclass[i]-1))*ant[i];
 			if (st > maxstr) maxstr=st;
 		}
-		//printf(" %d %d",misc1[i],misc2[i]);
 		printf(" %d%c\n",st,ast);
 		numcom++;
 	continue;
