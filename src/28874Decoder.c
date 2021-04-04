@@ -312,8 +312,9 @@ while (fptr<ifsiz) {
 			if (ulca > 0) ast='*'; else ast=' ';
 			printf("%d",band[i]);
 			printf("%c",bclass[i]+0x40);
+			/* 137-138 doesn't support MIMO 
 			if(ant[i]!=0)
-			printf("%d",ant[i]);
+			printf("%d",ant[i]);*/
 			if (ulclass[i] != 0) printf("%c",ulclass[i]+0x40);
 			st+=((bclass[i]==1)?1:(bclass[i]-1))*ant[i];
 			if (st > maxstr) maxstr=st;
