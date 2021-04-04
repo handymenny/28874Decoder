@@ -67,14 +67,15 @@ while (fptr<ifsiz) {
 		item8&=0xff;
 		fptr++;
 		bclass[i]=item8;
-		fread(&item8,1,1,in);
-		item8&=0xff;
-		fptr++;
-		ant[i]=item8;
-		fread(&item32,1,4,in);
-		fptr+=4;
-		fread(&item32,1,3,in);
-		fptr+=3;
+		for (int j = 0; j < 8; j++) {
+			fread(&item8, 1, 1, in);
+			item8 &= 0xff;
+			fptr++;
+			if(item8 != 0) {
+				ant[i] *= 10;
+				ant[i] += item8;
+			}
+		}
 	}
 	if (descok == 0) {
 		printf("Incorrect format: no any downlink carrier in combo\n");
@@ -138,7 +139,17 @@ while (fptr<ifsiz) {
 			if(ant[i]!=0)
 			printf("%d",ant[i]);
 			if (ulclass[i] != 0) printf("%c",ulclass[i]+0x40);
-			st+=((bclass[i]==1)?1:(bclass[i]-1))*ant[i];
+			if (bclass[i] == 1) {
+				st += ant[i];
+			} else if (ant[i] > 10) {
+				int temp = ant[i];
+				while(temp > 0) {
+					st += temp % 10;
+					temp /= 10;
+				}
+			} else {
+			    st += (bclass[i] - 1) * ant[i];	
+			}
 			if (st > maxstr) maxstr=st;
 		}
 		printf(" %d%c\n",st,ast);
@@ -230,7 +241,17 @@ while (fptr<ifsiz) {
 			if(ant[i]!=0)
 			printf("%d",ant[i]);
 			if (ulclass[i] != 0) printf("%c",ulclass[i]+0x40);
-			st+=((bclass[i]==1)?1:(bclass[i]-1))*ant[i];
+			if (bclass[i] == 1) {
+				st += ant[i];
+			} else if (ant[i] > 10) {
+				int temp = ant[i];
+				while(temp > 0) {
+					st += temp % 10;
+					temp /= 10;
+				}
+			} else {
+			    st += (bclass[i] - 1) * ant[i];	
+			}
 			if (st > maxstr) maxstr=st;
 		}
 		printf(" %d%c\n",st,ast);
@@ -316,7 +337,17 @@ while (fptr<ifsiz) {
 			if(ant[i]!=0)
 			printf("%d",ant[i]);*/
 			if (ulclass[i] != 0) printf("%c",ulclass[i]+0x40);
-			st+=((bclass[i]==1)?1:(bclass[i]-1))*ant[i];
+			if (bclass[i] == 1) {
+				st += ant[i];
+			} else if (ant[i] > 10) {
+				int temp = ant[i];
+				while(temp > 0) {
+					st += temp % 10;
+					temp /= 10;
+				}
+			} else {
+			    st += (bclass[i] - 1) * ant[i];	
+			}
 			if (st > maxstr) maxstr=st;
 		}
 		printf(" %d%c\n",st,ast);
