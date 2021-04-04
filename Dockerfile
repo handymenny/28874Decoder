@@ -6,9 +6,10 @@ WORKDIR /app
 # Copy binaries
 COPY . .
 
-# Install required packages to build and build
+# Install required packages to build, build and then remove build tools
 RUN apk add --no-cache make gcc libc-dev \
     && cd src/ \
-    && make
+    && make \
+    && apk del make gcc libc-dev
 
 ENTRYPOINT [ "./src/28874Decoder" ]
