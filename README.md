@@ -17,7 +17,7 @@ Most likely in the future 28874Decoder will be able to decompress automatically.
 After compressionm just run
 
 ```
-docker run --rm --name 28874Decoder olkitu/28874decoder [path_to_unpacked_00028874]
+docker run --rm --name 28874Decoder ghcr.io/HandyMenny/28874decoder [path_to_unpacked_00028874]
 ```
 
 # Build Instructions
